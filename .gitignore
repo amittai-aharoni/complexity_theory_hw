@@ -1,0 +1,21 @@
+# Latex .gitignore file
+main.aux
+main.log
+main.pdf
+main.out
+main.toc
+main.synctex.gz
+main.bbl
+main.blg
+main.bcf
+main.run.xml
+main.lof
+main.lot
+main.fdb_latexmk
+main.fls
+main.nav
+book.pdf
+hw3.pdf
+Assignment_1.tex
+assignment_2.tex
+assignment_3

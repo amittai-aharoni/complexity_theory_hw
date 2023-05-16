@@ -1,0 +1,45 @@
+\begin{question}
+Let $P/1$ be the class of languages that can be decided in 
+polynomial time with a single bit of advice
+(for each input size). That is $P/1 =
+\bigcup_{c\in\N} \DTIMEclass(n^c)/1$. Prove that $\Pclass \subsetneq \Pclass/1$.
+\begin{answer}
+    Given $L\in\DTIMEclass(n^c)$, there exists a polynomial-time Turing machine $M$
+    that decides $L$ and runs in time $O(n^c)$.
+    Hence the machine $M'(x,a)=M(x)$ decides $L$ in polynomial time with a single bit of advice.
+    Therefore, $\DTIMEclass(n^c)\subseteq \DTIMEclass(n^c)/1$.
+    And so $\Pclass\subseteq \Pclass/1$.
+    \par Consider
+% Rewrite in correct latex format
+\begin{gather*}
+    \UHALT=\{y^n\mid n\text{'s binary expansion encodes a pair }(M,x)
+    \\
+    \text{ such that }M\text{ is a Turing machine that halts on input }x\}    
+\end{gather*}
+First notice that if $\UHALT\in \Pclass$ then
+we have a polynomial-time machine for solving the halting problem.
+Hence $\UHALT\notin \Pclass$.
+Define the family of advice strings:
+\begin{gather*}
+    a_n=\begin{cases}
+        1 & \text{if }1^n\in \UHALT
+        \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{gather*}
+With machine $M(x,a_n)$:
+\begin{algorithmic}
+    \If{$a_n=1$}
+        \If{$x=1^n$}
+            \State \Return{accept}
+        \Else
+            \State \Return{reject}
+        \EndIf
+    \Else
+        \State \Return{reject}
+    \EndIf
+\end{algorithmic}
+\end{answer}
+The machine runs in polynomial time and $\norm{a_n}=1$.
+Thus $\UHALT\in \Pclass/1$ and so $\Pclass\subsetneq\Pclass/1$.
+\end{question}

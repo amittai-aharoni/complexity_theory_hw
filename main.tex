@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts} % Required for math symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algpseudocode} % Required for pseudocode
+
+% Create question environment
+\theoremstyle{definition}
+\newtheorem{question}{Question}
+\newtheorem*{answer}{Answer}
+\newtheorem{exercise}{Exercise}
+\newtheorem{solution}{Solution}
+% Create subquestion environment
+\newtheorem{subquestion}{}[question]
+\newtheorem*{subanswer}{Answer}
+% Create claim, lemma, theorem, definition, corollary environments
+\newtheorem{claim}{Claim}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+
+% Enumerate subquestions with letters
+\renewcommand{\thesubquestion}{(\arabic{question}\alph{subquestion})}
+
+% Set question number counter
+\setcounter{question}{0}
+
+
+% Create commands
+% Natural numbers
+\newcommand{\N}{\mathbb{N}}
+% Machine
+\newcommand{\machinet}{$\mathbb{M}$}
+\newcommand{\machine}{\mathbb{M}}
+% Oracle
+\newcommand{\oraclet}{$\mathcal{O}$}
+\newcommand{\oracle}{\mathcal{O}}
+% Norm of a set
+\newcommand{\norm}[1]{\lvert#1\rvert}
+% L complexity class
+\newcommand{\Lclass}{\mathsf{L}}
+% NL complexity class
+\newcommand{\NLclass}{\mathsf{NL}}
+% DP complexity class
+\newcommand{\DPclass}{\mathsf{DP}}
+% P complexity class
+\newcommand{\Pclass}{\mathsf{P}}
+% NP complexity class
+\newcommand{\NPclass}{\mathsf{NP}}
+% coNP complexity class
+\newcommand{\coNPclass}{\mathsf{coNP}}
+% NSPACE complexity class
+\newcommand{\NSPACEclass}{\mathsf{NSPACE}}
+% DTIME complexity class
+\newcommand{\DTIMEclass}{\mathsf{DTIME}}
+% PSPACE complexity class
+\newcommand{\PSPACEclass}{\mathsf{PSPACE}}
+% PSPACE-complete complexity class
+\newcommand{\PSPACEcomplete}{\mathsf{PSPACE-complete}}
+% PSPACE-hard complexity class
+\newcommand{\PSPACEhard}{\mathsf{PSPACE-hard}}
+% NP-hard complexity class
+\newcommand{\NPhard}{\mathsf{NP-hard}}
+% NP-complete complexity class
+\newcommand{\NPcomplete}{\mathsf{NP-complete}}
+% coNP complexity class
+\newcommand{\coNP}{\mathsf{coNP}}
+% coNP-hard complexity class
+\newcommand{\coNPhard}{\mathsf{coNP-hard}}
+% coNP-complete complexity class
+\newcommand{\coNPcomplete}{\mathsf{coNP-complete}}
+% SLITH language
+\newcommand{\SLITH}{\mathsf{SLITH}}
+% SLITH-CHECK language
+\newcommand{\SLITHCHECK}{\mathsf{SLITH-CHECK}}
+% SINGLE-CYCLE language
+\newcommand{\SINGLECYCLE}{\mathsf{SINGLE-CYCLE}}
+% Clique problem
+\newcommand{\Clique}{\mathsf{Clique}}
+% Exact clique problem
+\newcommand{\Exact}{\mathsf{Exact-Clique}}
+% SAT problem
+\newcommand{\SAT}{\mathsf{SAT}}
+% UHAULT language
+\newcommand{\UHALT}{\mathsf{UHALT}}
+
+\title{Complexity Theory}
+\author{Amity Aharoni}
+\date{April 2023}
+
+\begin{document}
+\maketitle
+
+\input{assignment_4/assignment_4.tex}
+
+\end{document}

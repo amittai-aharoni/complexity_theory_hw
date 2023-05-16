@@ -1,0 +1,59 @@
+\begin{question}
+Define:
+\begin{gather*}
+    \Pclass/\log = \bigcup_{c,d\in\N}\DTIMEclass(n^c/(d\log n)).
+\end{gather*}
+That is, $\Pclass/\log$ is the class of all languages that can be 
+decided in polynomial time with $O(\log n)$ bits of advice.
+Prove that $\SAT\notin\Pclass/\log$, unless $\Pclass=\NPclass$.
+\begin{answer}
+    We need to show that $\SAT\in\Pclass/\log$ implies that $\Pclass=\NPclass$.
+    Suppose that
+    $\SAT\in\Pclass/\log$.
+    Then there exists a polynomial-time Turing machine $M(x,n)=p(\norm{x},\norm{n})$
+    with $c\cdot\log n$ bits of advice $a$ for some $c\in\N$
+    that decides $\SAT$.
+    Where $\SAT$ is the set of boolean formulas such that there exists
+    a satisfying assignment.
+    Given a language $L$ in $\NPclass$,
+    by the Cook-Levin theorem,
+    there exists a polynomial-time reduction
+    $R$ from $L$ to $\SAT$.
+    Given $x$, $x\in L$ if and only if $\Phi(x_1,\dots,x_n):=R(x)\in\SAT$.
+    \par We construct a polynomial-time Turing machine $M'$
+    that decides $L$ and belongs to $\Pclass$. Given the set of all advice of length $O(\log n)$ - $A$,
+    $M'$ does the following:
+    \begin{algorithmic}[1]
+        % Set truth assignment to empty:
+        \State $\tau\gets\emptyset$ \Comment{Truth assignment}
+        % Iterate over all advice:
+        \For{$a\in A$}
+            % While loop up to n:
+            \For{$i\in\{1,\dots,n\}$}
+                % Run $M$ on formula i-1
+                \If{$M(\Phi[\tau\cup\{x_i\to 0\}],a)= 1$}
+                    \State $\tau\gets\tau\cup\{x_i\to 0\}$
+                \Else
+                    \State $\tau\gets\tau\cup\{x_i\to 1\}$
+                \EndIf
+                \If{$M(\Phi[\tau],a)=1$}
+                    \State \Return 1
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \Return 0
+    \end{algorithmic}
+    If $x\notin L$, then $\Phi(x)\notin\SAT$.
+    Then there does not exist a satisfying assignment $\tau$ for $\Phi(x)$.
+    Then for all $a\in A$, $M'(\Phi(x),a)=0$.
+    As $\norm{\Phi}=\norm{\Phi[t]}$ and as the length of the advice is always $c\cdot \log n$,
+    $M$ would run for $p(\norm{\Phi},\norm{a})$ for each iteration.
+    The machine would run for $nc\cdot\log n\cdot p(\norm{\Phi},\norm{a})\leq cn^2\cdot p(\norm{\Phi},\norm{a})$ steps which is polynomial.
+    \par If $x\in L$, then $\Phi(x)\in\SAT$.
+    Then there exists a satisfying assignment $\tau$ for $\Phi(x)$.
+    Then for some $a\in A$, $M'(\Phi(x),a)=1$.
+    The machine would stop before $nc\cdot\log n$ steps of the loop.
+    \par Therefore, $L\in\Pclass$. Since $L$ is an arbitrary language in $\NPclass$,
+    $\NPclass\subseteq\Pclass$. Since $\Pclass\subseteq\NPclass$, $\Pclass=\NPclass$.
+\end{answer}
+\end{question}
