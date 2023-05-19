@@ -1,24 +1,60 @@
 \begin{question}
     % Rewrite question in correct latex format
-    Let  $P_{nu}$ be the class of all decision 
-    problems $L \subseteq \{0, 1\}^*$ 
-    such that for each $n \in \N$, 
-    the problem $L \cap \{0, 1\}^n$ 
-    is polynomial-time solvable. 
-    That is, for each $n \in \N$, 
-    there exists a deterministic TM $M_n$ 
-    and a constant $c_n$ such that 
-    $M_n$ decides $L \cap \{0, 1\}^n$ and 
+    Let  $P_{nu}$ be the class of all decision
+    problems $L \subseteq \{0, 1\}^*$
+    such that for each $n \in \N$,
+    the problem $L \cap \{0, 1\}^n$
+    is polynomial-time solvable.
+    That is, for each $n \in \N$,
+    there exists a deterministic TM $M_n$
+    and a constant $c_n$ such that
+    $M_n$ decides $L \cap \{0, 1\}^n$ and
     runs in time $O(n^{c_n})$.
     \par In this exercise, you will show that $P_{nu}$
-    is different from $P/poly$. 
+    is different from $P/poly$.
     \par You may opt for an easy variant (A) of this
     exercise, for a total maximum of 11/2 points,
     or a harder variant (B) of this exercise,
     for a total maximum of 2 points.
-    \par (A) Prove that if $P_{nu} = P/poly$, 
+    \par (A) Prove that if $P_{nu} = P/poly$,
     then the Polynomial Hierarchy collapses.
     \par (B) Prove that $P_{nu} \neq P/poly$.
     \par Hint: for (B), have a look at Sections 6.5 and 6.6 from the book [1].
+
+    \begin{answer} (B).
+        It suffices to show that there exists a problem in $P_{nu}$ that cannot 
+        be solved by a Turing Machine in $P/poly$. Recall that $P_{nu}$ is a 
+        class of all decision problems $L \subseteq {0, 1}^*$ such that for
+         each $n \in \mathbb{N}$, the problem $L \cap {0, 1}^n$ is polynomial
+          time solvable. By Theorem 6.21 from the book, for every $n > 1$ there 
+          exists a function $f:\{0,1\}^n\to\{0,1\}$ that cannot be computed by any 
+          circuit $C$ of size 
+          $2^n/(10n)$. This also implies that $f$ cannot be computed by any
+            polynomial size circuit.
+        %    Hence, by this theorem, there is a decision problem 
+        %   $L$ for every $n$ in $P_{nu}$ such that $L \cap \set{0, 1}^n$ is 
+        %   polynomial time solvable, but there does not exist a \textit{polynomially} 
+        %   sized circuit that is able to decide $L$. Thus showing that there 
+        %   exists problem in $P_{nu}$ which is not in $P/poly$.
+          \par Fix a particular $n > 1$. Let $L$ be the language
+          $L=\{x\in\{0,1\}^n \mid f(x)=1\}$. Enumerate all circuits of size
+          $n$ by $x_1,\dots,x_{2^n}$
+          and define $L'=\{1^k \mid x_k\in L\}$.
+          If $L'$ was decideable by a polynomial size circuit $C$ then
+          $L$ would be decideable by a polynomial size circuit $C$
+          by using our enumeration to encode a string $x$
+          to a string $1^k$ and then running $C$.
+          Thus $L'$ is not decideable by a polynomial size circuit.
+            \par Now we show that $L'$ is in $P_{nu}$ by constructing $M_l$
+            for every $l$.
+            If $l>2^n$, use the constant $0$ machine.
+            Otherwise
+            \begin{itemize}
+                \item If $x_k\in L$, use the machine that
+                verifies that the input is equal to $1^l$.
+                \item If $x_k\notin L$, use the constant $0$ machine.
+            \end{itemize}
+            As all machines are polynomial, $L'\in P_{nu}$.
+    \end{answer}
     
 \end{question}
