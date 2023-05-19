@@ -1,0 +1,47 @@
+\begin{question}
+    Consider the following two complexity classes $\mathsf{P}^{\mathsf{NP}[\text{log}]}$ and $\mathsf{P}_{||}^{\mathsf{NP}}$:
+
+    \begin{itemize}
+        \item $\mathsf{P}^{\mathsf{NP}[\text{log}]}$ is the class of all decision problems $L \subseteq \set{0, 1}^*$ for which there exists a polynomial-time deterministic oracle TM $\mathbb{M}$ and an oracle language $O \in \mathsf{NP}$ such that $\mathbb{M}^O$ decides $L$, and a function $f(n): \mathbb{N} \to \mathbb{N}$ that is $O(\text{log}(n))$ such that for each input $x \in \set{0, 1}^*$, $\mathbb{M}^O(x)$ makes at most $f(|x|)$ queries to the oracle $O$.
+        \item $\mathsf{P}_{||}^{\mathsf{NP}}$ is the class of all decision problems $L \subseteq \set{0, 1}^*$ for which there exists a polynomial-time deterministic oracle TM $\mathbb{M}$ and an oracle language $O \in \mathsf{NP}$ such that $\mathbb{M}^O$ decides $L$, and for each input, $\mathbb{M}^O$ makes their queries to $O$ \textit{in parallel}.
+
+        Making parallel oracle queries works as follows. The machine $\mathbb{M}$ may write an arbitrary number of oracle queries $q_1, \ldots, q_m \in \set{0, 1}^*$ on the oracle tape, separated by a designated symbol \hash (i.e., $q_1\hash q_2 \hash \ldots \hash q_m$). Then, when the machine $\mathbb{M}$ enters the designated query state $q_{\text{query}} \in Q$, instead of transitioning into $q_{\text{yes}}$ or $q_{\text{no}}$ depending on the answer of the oracle query, the machine transitions into a designated state $q_{\text{done}}$, and the contents of the oracle tape are replaced by the string $b_1 \hash b_2 \hash \ldots \hash b_m$ that represents the answers $b_1, \ldots, b_m \in \set{0,1}$ to the oracle queries (e.g. $0 \hash 1 \hash 1 \hash 0$), where $b_1 = 1$ if and only if $q_i$ is in the oracle language $O$. The machine $\mathbb{M}$ is only allowed to make a single such combined query for each input $x \in \set{0, 1}^*$. In other words, it must compute (and write down) all the oracle queries that it wants to make before getting an answer for any of them.
+\end{itemize}
+
+Prove that $\mathsf{P}^{\mathsf{NP}[\text{log}]} = \mathsf{P}_{||}^{\mathsf{NP}}$.
+
+\begin{answer}
+    $\mathsf{P}_{||}^{\mathsf{NP}} \subseteq \mathsf{P}^{\mathsf{NP}[\text{log}]}:$
+
+    Assume $L$ is a decision problem in $\mathsf{P}_{||}^{\mathsf{NP}} $. That is, there exists a deterministic polynomial-time TM $M_1$ with access to an oracle $O$ to which $M$ can only make a single arbitrary-size query to (or many small queries in parallel) such that it decides input $x$. We must show that $L$ can be decided by a TM $M_2$ that can make at most logarithmic-many sequential queries to an oracle $O$.
+
+    \par Firstly, as per the hint, consider an $\mathsf{NP}$-complete oracle $O$. If $L \in \mathsf{NP}$, the oracle $O$ will allow us to decide $L$ since there exists a polynomial-time reduction from $L$ to $O$. For concreteness, let us assume that $O$ is $\mathsf{SAT}$.
+
+    \par Now, consider TM $M_2$. In order to decide inputs $x$ that are also decided by $M_1$, we may use our oracle $O$ in $M_1$ to guess \textit{how many} boolean formulas are set to true by the queries to $O$ in $M_2$. If we can guess the number of formulas $k$ that are true, we can use this information to find a specific truth assignment to the $\mathsf{SAT}$ problem allowing us to finally decide $x$. We can get a specific truth assignment which will be used to conclude the proof using the self-reducibility property of $\mathsf{SAT}$.
+    Define a set of decision problems as follows
+
+    \begin{gather*}
+        L'=\{(\varphi, k)\mid \varphi \text{ is a propositional logic formula}
+        \\
+        \text{such that it has a truth assignment making} \geq k \text{ literals true } \}
+    \end{gather*}
+
+    Clearly, $L'$ is in $\mathsf{NP}$ since we can provide a short certificate to test it.
+
+    Then, concretely $M_2$ works as follows:
+    \begin{itemize}
+        \item Given input $x$
+        \item Next, consider a formula $\varphi$ with $n$ free variables. Employ a binary search approach to determine the maximum number of variables that can be set to true in a satisfying assignment. Begin by querying the oracle with $(\varphi, n/2)$. If the oracle confirms a positive response, proceed to query $(\varphi, 3n/4)$. Conversely, if the response is negative, query $(\varphi, n/4)$, and so on. As binary search operates in a logarithmic manner, only $\text{log} \ n$ calls to the oracle are necessary to ascertain the maximum number of true variables in a satisfying assignment.
+        \item Once we have found $k$, we can use the self-reducibility property of $\mathsf{SAT}$ that provides us with a concrete truth assignment to our problem. We can use this truth assignment to decide $x$ and thus we conclude that $M_2$ can correctly simulate the TM $M_1$.
+    \end{itemize}
+
+    Since $L$ was arbitrary, it is the case that $\mathsf{P}_{||}^{\mathsf{NP}} \subseteq \mathsf{P}^{\mathsf{NP}[\text{log}]}$.
+
+    \vspace{1em}
+
+    $\mathsf{P}^{\mathsf{NP}[\text{log}]} \subseteq   \mathsf{P}_{||}^{\mathsf{NP}}:$
+
+    \par Let $x$ be an arbitrary input such that $x \in L$ and $L$ is decided by a TM $M_1$ which is in $\mathsf{P}^{\mathsf{NP}[\text{log}]}$. Then, $M_1$ can decide $L$ with at most logarithmic-many (sequential) queries to the oracle $O$. Note that these sequential queries to the oracle $O$ form a tree (e.g. if $O(q_1) = yes$ then call $O(q_3)$ else $O(q_2)$, and if $O(q_3) = yes$, then ... etc.). The leaves of this query tree will determine whether we should accept or reject $x$. The maximum depth of the query tree is logarithmic in the size of the input (as is required by the constraint of the oracle). Now, in the worst case (a perfect binary tree) there will be $l = 2^{log(n)} = n$ number of leaves. Denote the set of leaves from this query tree as $lq$.
+    \par Let $M_2$ be a deterministic Turing Machine with an access to an oracle $O_p$ such that we can make arbitrarily many queries to $O_p$ but they must be made in parallel. Given $x$ as input, we may arrange the queries to be exactly the $lq$ defined above and make the call to the oracle $O_p(lq)$. The output of this oracle will be as large as the query ($n$) which is important since we must decide $x$ in polynomial time. Since the information obtained from the sequential queries in TM $M$ was sufficient to decide $x$, this same information obtained all at once in $M_2$ will be sufficient to decide $x$. Since $x$ and $L$ were arbitrary, we get that any $L$ that can be decided by a TM belonging to $\mathsf{P}^{\mathsf{NP}[\text{log}]}$ can also be decided by a TM belonging to $\mathsf{P}_{||}^{\mathsf{NP}}$. Thus, $\mathsf{P}^{\mathsf{NP}[\text{log}]} \subseteq   \mathsf{P}_{||}^{\mathsf{NP}}$.
+\end{answer}
+\end{question}
